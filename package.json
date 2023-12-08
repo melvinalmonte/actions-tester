@@ -8,7 +8,10 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "test:e2e": "vitest",
+    "lint": "vitest",
+    "format": "vitest"
   },
   "license": "MIT",
   "devDependencies": {
