@@ -41,7 +41,8 @@ jobs:
           path: ${{ env.NPM_CACHE_DIR }}
           key: ${{ needs.setup.outputs.npm-cache-key }}
       - name: Format code
-        run: npm run format
+        # run: npm run format
+        run: npm run test
       - name: Lint code
         # run: npm run lint
         run: npm run test
