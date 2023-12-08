@@ -16,9 +16,9 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
+        cache: 'npm'
     - name: Install dependencies
-      run: pnpm install
+      run: npm ci
 
   unit-tests:
     needs: lint-and-format
@@ -32,11 +32,11 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
+        cache: 'npm'
     - name: Install dependencies
-      run: pnpm install
+      run: npm install
     - name: Run Unit Tests
-      run: pnpm run test
+      run: npm run test
 
   e2e-tests:
     needs: lint-and-format
@@ -50,9 +50,9 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
+        cache: 'npm'
     - name: Install dependencies
-      run: pnpm install
+      run: npm install
   build:
     needs: [unit-tests]
     runs-on: ubuntu-latest
@@ -65,8 +65,8 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
+        cache: 'npm'
     - name: Install dependencies
-      run: pnpm install
+      run: npm install
     - name: Build
-      run: pnpm run build
+      run: npm run build
