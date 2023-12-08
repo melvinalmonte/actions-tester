@@ -2,64 +2,33 @@ name: React CI/CD
 
 on: [push, pull_request]
 
-env:
-  NODE_VERSION: 20.x
-
 jobs:
-  lint-and-format:
+  build-and-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ env.NODE_VERSION }}
+    - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ env.NODE_VERSION }}
+        node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: Cache node modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
     - name: Install dependencies
-      run: npm install
+      run: npm ci
     - name: Format code
       run: npm run format
     - name: Lint code
       run: npm run lint
-
-  unit-tests:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-    - name: Install dependencies
-      run: npm install
     - name: Run Unit Tests
       run: npm test
-
-  e2e-tests:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-    - name: Install dependencies
-      run: npm install
     - name: Run E2E Tests
       run: npm run test:e2e
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-    - name: Install dependencies
-      run: npm install
     - name: Build
       run: npm run build
